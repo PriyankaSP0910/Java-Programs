@@ -1,0 +1,141 @@
+CREATE DATABASE employee_db;
+USE employee_db;
+
+-- creating employee table as strong entity without relationship
+CREATE TABLE `employee` (
+	`ssn` INT PRIMARY KEY,
+	`f_name` VARCHAR(50) NOT NULL,
+    `m_name` VARCHAR(50),
+    `l_name` VARCHAR(50) NOT NULL,
+    `address`  VARCHAR(200),
+    `b_day` DATE NOT NULL,
+    `salary` DECIMAL(10,2)
+    );
+
+-- inserting values in the employee Table
+INSERT INTO employee (ssn,f_name,m_name,l_name,address,b_day,salary)
+VALUES
+    (10,'ABCD','EFG','XYZ','Bangalore','1990-08-01',100000.00),
+	(1,'Nabendu',NULL,'Das','West Bengal','2001-09-23',60000.00),
+    (2,'Ashish',NULL,'Garg','Delhi','2000-06-20',50000.00);
+
+-- creating department table as strong entity without relationship
+CREATE TABLE `department` (
+	`d_no` INT PRIMARY KEY,
+    `d_name` VARCHAR(50)
+    );
+-- ALTER TABLE `department` MODIFY COLUMN `m_start_date` DATE;
+
+-- inserting values to department table
+INSERT INTO department(d_no,d_name)
+VALUES
+	(123,'Software Developer'),
+    (345,'Networking');
+
+-- creating project table 
+CREATE TABLE `project` (
+	`p_no` INT PRIMARY KEY, 
+    `p_name` VARCHAR(50) NOT NULL,
+    `location` VARCHAR(100));
+    
+-- inserting values to project table
+INSERT INTO `project` (p_no,p_name,location)
+VALUES
+	(100,'Banglaore Guide App','bangalore');
+
+-- creating dependent weak entity with partial key refering from employee table
+CREATE TABLE `dependent` (
+	`emp_ssn` INT,
+    `emp_name` VARCHAR(50),
+    `sex` VARCHAR(10),
+    `b_day` DATE,
+    `relationship` VARCHAR(50),
+    PRIMARY KEY (`emp_ssn`,`emp_name`),
+    FOREIGN KEY (`emp_ssn`) REFERENCES `employee` (`ssn`)
+    );
+
+-- adding values to the dependent table
+INSERT INTO `dependent`(emp_ssn,emp_name,sex,b_day,relationship)
+VALUES
+	(1,'Nabendu Das','Male','2001-09-23','Single'),
+    (10,'ABCD EFG XYZ','FEMALE','1990-08-01','Married'),
+    (2,'Ashish Garg','Male','2000-06-20','Single');
+
+-- adding department foreign key to the employee table from department table
+ALTER TABLE `employee`
+ADD COLUMN `d_no` INT,
+ADD CONSTRAINT `fk_dept_no`
+FOREIGN KEY (`d_no`) REFERENCES `department`(`d_no`);
+
+-- adding supervisor ssn as foreign key to the employee table
+ALTER TABLE `employee`
+ADD COLUMN `sup_ssn` INT,
+ADD CONSTRAINT `fk_supervisor_ssn`
+FOREIGN KEY (`sup_ssn`) REFERENCES `employee`(`ssn`);
+
+-- updating employee values with foreign keys
+UPDATE `employee` 
+SET d_no = '123' , sup_ssn = 10
+WHERE ssn = 1;
+
+UPDATE `employee` 
+SET d_no = '123' , sup_ssn = 10
+WHERE ssn = 2;
+
+UPDATE `employee` 
+SET d_no = '123' , sup_ssn = 10
+WHERE ssn = 10;
+
+-- adding manager ssn as foreign key in department table with start date
+ALTER TABLE `department`
+ADD COLUMN `m_ssn` INT, 
+ADD COLUMN `m_start_date` DATE,
+ADD CONSTRAINT `fk_manager_ssn`
+FOREIGN KEY (`m_ssn`) REFERENCES `employee`(`SSN`);
+
+-- updating the values of deparment with foreign key
+UPDATE `department`
+SET m_ssn =  2, m_start_date = '2022-09-30'
+WHERE d_no = 123; 
+
+-- adding department no to the project table as foreign key
+ALTER TABLE `project`
+ADD COLUMN `d_no` INT,
+ADD CONSTRAINT `fk_proj_dept_no`
+FOREIGN KEY (`d_no`) REFERENCES `department`(`d_no`);
+
+-- updating the project table values with foreign keys
+UPDATE `project`
+SET d_no = 123
+WHERE p_no = 100;
+
+-- adding works_on table for m:n relationship between employee and project
+CREATE TABLE `works_no` (
+	`emp_ssn` INT,
+    `p_no` INT,
+    `hour` INT,
+    PRIMARY KEY (`emp_ssn`,`p_no`),
+    FOREIGN KEY (`emp_ssn`) REFERENCES `employee`(`ssn`),
+    FOREIGN KEY (`p_no`) REFERENCES `project`(`p_no`)
+    );
+
+-- adding values to works on table
+INSERT INTO `works_no`(emp_ssn,p_no,hour)
+VALUES
+	(1,100,10),
+    (2,100,6);
+
+-- adding dept location table for multivalued attribute location
+CREATE TABLE `dept_location` (
+	`d_no` INT,
+    `d_locations` VARCHAR(100),
+	PRIMARY KEY (`d_no`,`d_locations`),
+    FOREIGN KEY (`d_no`) REFERENCES `department`(`d_no`)
+    );
+
+-- adding values into dept_location table
+INSERT INTO `dept_location` (d_no,d_locations)
+VALUES
+	(123,'bangalore'),
+    (123,'delhi'),
+    (123,'kolkata');
