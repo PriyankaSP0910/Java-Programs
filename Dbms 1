@@ -1,3 +1,20 @@
+SELECT e.ssn, e.fname, e.lname, e.address, e.salary
+FROM employee e
+JOIN employee e1 ON e1.sup_ssn = e.ssn
+JOIN works_on w ON w.ssn = e.ssn
+JOIN project p ON p.pid = w.pid
+WHERE p.status = 'completed'
+GROUP BY e.ssn, e.fname, e.lname, e.address, e.salary
+HAVING COUNT(e1.sup_ssn) > 3 AND COUNT(DISTINCT w.pid) > 0
+AND e.ssn IN (
+    SELECT DISTINCT e2.ssn
+    FROM employee e2
+    WHERE e2.ssn = e.ssn
+)
+
+
+
+
 mysql> CREATE TABLE employee(ssn INT PRIMARY KEY,f_name VARCHAR(50) NOT NULL,m_name VARCHAR(50),l_name VARCHAR(50) NOT NULL,address VARCHAR(200),b_day DATE NOT NULL,sex varchar(20),salary INT);
 Query OK, 0 rows affected (0.82 sec)
 
