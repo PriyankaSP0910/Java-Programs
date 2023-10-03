@@ -1,0 +1,782 @@
+mysql -u mca072 -h 172.16.34.124 -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 380
+Server version: 8.0.33-0ubuntu0.22.04.2 (Ubuntu)
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| db_exe072          |
+| information_schema |
+| mca072             |
+| performance_schema |
++--------------------+
+4 rows in set (0.01 sec)
+
+mysql> use mca072;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_mca072 |
++------------------+
+| DEPARTMENT       |
+| DEPENDENT        |
+| EMPLOYEE         |
+| LOCATION         |
+| MANAGE           |
+| PLOCATION        |
+| PROJECT          |
+| WORKSON          |
++------------------+
+8 rows in set (0.00 sec)
+
+mysql> desc MANAGE;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| ssn         | int  | NO   | PRI | NULL    |       |
+| d_id        | int  | NO   | PRI | NULL    |       |
+| m_startdate | date | NO   | PRI | NULL    |       |
++-------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from MANAGE;
++-----+------+-------------+
+| ssn | d_id | m_startdate |
++-----+------+-------------+
+|   1 |    1 | 2023-01-01  |
+|   2 |    1 | 2023-01-01  |
+|   3 |    2 | 2023-01-01  |
+|   4 |    2 | 2023-01-01  |
+|   5 |    3 | 2023-02-01  |
+|   6 |    3 | 2023-02-01  |
+|   7 |    4 | 2023-03-01  |
+|   8 |    4 | 2023-03-01  |
+|   9 |    5 | 2023-03-01  |
+|  10 |    5 | 2023-03-01  |
++-----+------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> delete from MANAGE where ssn=1;
+Query OK, 1 row affected (0.11 sec)
+
+mysql> delete from MANAGE where ssn=2;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> delete from MANAGE where ssn=3;
+Query OK, 1 row affected (0.08 sec)
+
+mysql> delete from MANAGE where ssn=4;
+Query OK, 1 row affected (0.11 sec)
+
+mysql> delete from MANAGE where ssn=45
+    -> 
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from MANAGE where ssn=5;
+Query OK, 1 row affected (0.40 sec)
+
+mysql> delete from MANAGE where ssn=6;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> delete from MANAGE where ssn=7;
+Query OK, 1 row affected (0.15 sec)
+
+mysql> delete from MANAGE where ssn=8;
+Query OK, 1 row affected (0.12 sec)
+
+mysql> delete from MANAGE where ssn=9;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> delete from MANAGE where ssn=10;
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from MANAGE;
+Empty set (0.00 sec)
+
+mysql> select * from DEPARTMENT;
++------+-------------+
+| d_id | d_name      |
++------+-------------+
+|    1 | Development |
+|    2 | Finance     |
+|    3 | Marketing   |
+|    4 | H R         |
+|    5 | R and D     |
++------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |  NULL |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |  NULL |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |  NULL |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |  NULL |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |  NULL |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |  NULL |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |  NULL |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |  NULL |    5 | 1998-05-05 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEE values(11,'Shashank',null,null,Bengaluru,90000,1,1,'1999-10-11');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO EMPLOYEE values(11,'Shashank',null,null,Bengaluru,90000,NULL,1,'1999-10-11');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO EMPLOYEE values(11,'Shashank',null,null,'Bengaluru',90000,NULL,1,1,'1999-10-11');
+ERROR 1048 (23000): Column 'gender' cannot be null
+mysql> INSERT INTO EMPLOYEE values(11,'Shashank',null,null,'Bengaluru',90000,'M',1,1,'1999-10-11');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> INSERT INTO EMPLOYEE values(12,'Virup',null,null,'Bengaluru',90000,'M',1,1,'1999-10-25');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> INSERT INTO MANAGER values(1,1,'2023-1-1');
+ERROR 1146 (42S02): Table 'mca072.MANAGER' doesn't exist
+mysql> INSERT INTO MANAGE values(1,1,'2023-1-1');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> INSERT INTO MANAGE values(2,2,'2023-1-1');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> INSERT INTO MANAGE values(5,3,'2023-1-1');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> INSERT INTO MANAGE values(7,4,'2023-1-1');
+Query OK, 1 row affected (0.09 sec)
+
+mysql> INSERT INTO MANAGE values(10,5,'2023-1-1');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from MANAGE;
++-----+------+-------------+
+| ssn | d_id | m_startdate |
++-----+------+-------------+
+|   1 |    1 | 2023-01-01  |
+|   2 |    2 | 2023-01-01  |
+|   5 |    3 | 2023-01-01  |
+|   7 |    4 | 2023-01-01  |
+|  10 |    5 | 2023-01-01  |
++-----+------+-------------+
+5 rows in set (0.01 sec)
+
+mysql> UPDATE EMPLOYEE SET column s_ssn=1 where ssn=1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'column s_ssn=1 where ssn=1' at line 1
+mysql> UPDATE EMPLOYEE SET s_ssn=1 where ssn=1;
+Query OK, 1 row affected (0.12 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=1 where ssn=2;
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=1 where ssn=11;
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=1 where ssn=12;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=5 where d_id=3;
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=7 where d_id=4;
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> UPDATE EMPLOYEE SET s_ssn=10 where d_id=5;
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> UPDATE MANAGE SET s_ssn=3 where d_id=2;
+ERROR 1054 (42S22): Unknown column 's_ssn' in 'field list'
+mysql> delete MANAGE SET s_ssn=2 where d_id=2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SET s_ssn=2 where d_id=2' at line 1
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |     1 |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |     1 |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |     5 |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |     5 |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |     7 |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |     7 |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |    10 |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |    10 |    5 | 1998-05-05 |
+|  11 | Shashank | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-11 |
+|  12 | Virup    | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-25 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+12 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET s_ssn=3 where d_id=3;
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |     1 |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |     1 |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |     3 |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |     3 |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |     7 |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |     7 |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |    10 |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |    10 |    5 | 1998-05-05 |
+|  11 | Shashank | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-11 |
+|  12 | Virup    | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-25 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+12 rows in set (0.00 sec)
+
+mysql> select * FROM DEPENDENT;
++----------+--------+-----------+----------+-----+
+| dep_name | gender | birthdate | relation | ssn |
++----------+--------+-----------+----------+-----+
+| Dharma   | F      |        10 | Daughter |   1 |
+| Ramu     | M      |        50 | Father   |   1 |
+| Gurunath | M      |        50 | Father   |   2 |
++----------+--------+-----------+----------+-----+
+3 rows in set (0.00 sec)
+
+mysql> alter TABLE PROJECT ADD column p_worth;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> alter TABLE PROJECT ADD column p_worth int(10);
+Query OK, 0 rows affected, 1 warning (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> desc PROJECT;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| p_name     | varchar(20) | NO   |     | NULL    |       |
+| p_location | varchar(40) | NO   |     | NULL    |       |
+| d_id       | int         | YES  | MUL | NULL    |       |
+| p_id       | int         | NO   | PRI | NULL    |       |
+| s_date     | date        | NO   |     | NULL    |       |
+| e_date     | date        | NO   |     | NULL    |       |
+| p_worth    | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> select * from PROJECT;
++-----------------+------------+------+------+------------+------------+---------+
+| p_name          | p_location | d_id | p_id | s_date     | e_date     | p_worth |
++-----------------+------------+------+------+------------+------------+---------+
+| Devops          | Bangalore  |    5 |    1 | 2023-04-01 | 2023-06-01 |    NULL |
+| Data science    | Bangalore  |    1 |    2 | 2023-03-01 | 2023-05-01 |    NULL |
+| Web DEvelopment | Chennai    |    2 |    3 | 2023-02-01 | 2023-04-01 |    NULL |
+| App DEvelopment | Banaglore  |    3 |    4 | 2023-02-01 | 2023-05-01 |    NULL |
+| Mining          | Banaglore  |    4 |    5 | 2023-02-01 | 2023-08-01 |    NULL |
+| IOT             | Bangalore  |    5 |    6 | 2023-05-01 | 2023-07-01 |    NULL |
+| IT              | Bangalore  |    5 |    7 | 2023-05-01 | 2023-07-01 |    NULL |
++-----------------+------------+------+------+------------+------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> update PROJECT SET p_worth=500000 where p_id=1;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=500000 where p_id=2;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=100000 where p_id=3;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=100000 where p_id=4;
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=100000 where p_id=5;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=50000 where p_id=6;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update PROJECT SET p_worth=700000 where p_id=7;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from PROJECT;
++-----------------+------------+------+------+------------+------------+---------+
+| p_name          | p_location | d_id | p_id | s_date     | e_date     | p_worth |
++-----------------+------------+------+------+------------+------------+---------+
+| Devops          | Bangalore  |    5 |    1 | 2023-04-01 | 2023-06-01 |  500000 |
+| Data science    | Bangalore  |    1 |    2 | 2023-03-01 | 2023-05-01 |  500000 |
+| Web DEvelopment | Chennai    |    2 |    3 | 2023-02-01 | 2023-04-01 |  100000 |
+| App DEvelopment | Banaglore  |    3 |    4 | 2023-02-01 | 2023-05-01 |  100000 |
+| Mining          | Banaglore  |    4 |    5 | 2023-02-01 | 2023-08-01 |  100000 |
+| IOT             | Bangalore  |    5 |    6 | 2023-05-01 | 2023-07-01 |   50000 |
+| IT              | Bangalore  |    5 |    7 | 2023-05-01 | 2023-07-01 |  700000 |
++-----------------+------------+------+------+------------+------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> desc DEPARTMENT;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| d_id   | int         | NO   | PRI | NULL    |       |
+| d_name | varchar(25) | NO   |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select f_name ,l_name,d_name from EMPLOYEE e , DEPARTMENT d, where d.number=e.dno and e.salary>(SELECT AVG(ee.salary) FROM EMPLOYEE ee DEPARTMENT dd where SELECT(d_name='Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.number=e.dno and e.salary>(SELECT AVG(ee.salary) FROM EMPLOYEE ee DEPART' at line 1
+mysql> select f_name ,l_name,d_name FROM EMPLOYEE e , DEPARTMENT d, where d.d_id=e.d_id and e.salary>(SELECT AVG(ee.salary) FROM EMPLOYEE ee DEPARTMENT dd where SELECT(d_name='Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.d_id=e.d_id and e.salary>(SELECT AVG(ee.salary) FROM EMPLOYEE ee DEPARTM' at line 1
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d, where d.d_id=e.d_id and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTMENT d2 where e2.d_id=d2.d_id and d2.d_name='Finance');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.d_id=e.d_id and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTM' at line 1
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d, where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE 
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPAR' at line 1
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d, where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTMENT d2 where e2.d_id=d2.d_id and d2.d_name='Finance';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPAR' at line 1
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d, where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTMENT d2 where e2.dno=d2.dnumber and d2.d_name='Finance';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.dnumber=e.dno and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPAR' at line 1
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d where d.d_id=e.d_id and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTMENT d2 where e2.d_id=d2.d_id and d2.d_name='Finance');
++----------+----------+-------------+
+| f_name   | l_name   | d_name      |
++----------+----------+-------------+
+| Erika    | Patrick  | Marketing   |
+| Manjula  | Bhat     | Marketing   |
+| Nima     | NULL     | H R         |
+| Prerna   | Vashisht | H R         |
+| Raj      | Kamble   | R and D     |
+| Sumanth  | Ramesh   | R and D     |
+| Shashank | NULL     | Development |
+| Virup    | NULL     | Development |
++----------+----------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEE SET salary=100000 where ssn=3;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select e.f_name ,e.l_name,d.d_name FROM EMPLOYEE e , DEPARTMENT d where d.d_id=e.d_id and e.salary>(SELECT AVG(e2.salary) FROM EMPLOYEE e2,DEPARTMENT d2 where e2.d_id=d2.d_id and d2.d_name='Finance');
++----------+--------+-------------+
+| f_name   | l_name | d_name      |
++----------+--------+-------------+
+| Chandra  | Shetty | Finance     |
+| Shashank | NULL   | Development |
+| Virup    | NULL   | Development |
++----------+--------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select avg(salary) from EMPLOYEE e,DEPARTMENT d where d.d_id=e.e_id where d_name='Finance';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d_name='Finance'' at line 1
+mysql> select avg(salary) from EMPLOYEE e join DEPARTMENT d on e.d_id=d.d_id where d_name='Finance';
++-------------+
+| avg(salary) |
++-------------+
+|       80000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |     1 |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |     1 |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru | 100000 | M      |  NULL |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |     3 |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |     3 |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |     7 |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |     7 |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |    10 |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |    10 |    5 | 1998-05-05 |
+|  11 | Shashank | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-11 |
+|  12 | Virup    | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-25 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+12 rows in set (0.00 sec)
+
+mysql> select e.f_name,e.l_name from EMPLOYEE e , DEPARTMENT d ,WORKSON w,PROJECT p where e.ssn=w.ssn;
+Empty set (0.00 sec)
+
+mysql> desc WORKSON;
++-------+------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+------+------+-----+---------+-------+
+| ssn   | int  | NO   | PRI | NULL    |       |
+| p_id  | int  | NO   | PRI | NULL    |       |
+| hours | int  | NO   | PRI | NULL    |       |
++-------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from WORKSON;
+Empty set (0.00 sec)
+
+mysql> INSERT INTO WORKSON values(9,6,4);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> INSERT INTO WORKSON values(9,7,4);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> INSERT INTO WORKSON values(9,1,5);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from WORKSON;
++-----+------+-------+
+| ssn | p_id | hours |
++-----+------+-------+
+|   9 |    1 |     5 |
+|   9 |    6 |     4 |
+|   9 |    7 |     4 |
++-----+------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D' p.status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)
+    -> >1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'p.status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p' at line 1
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)  >1;
+ERROR 1054 (42S22): Unknown column 'p.status' in 'where clause'
+mysql> ALTER TABLE PROJECT ADD p.status;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.status' at line 1
+mysql> ALTER TABLE PROJECT ADD p.status VARCHAR(15);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.status VARCHAR(15)' at line 1
+mysql> ALTER TABLE PROJECT ADD p_status VARCHAR(15);
+Query OK, 0 rows affected (0.58 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)  >1;
+ERROR 1054 (42S22): Unknown column 'p.status' in 'where clause'
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.P_status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)  >1;
+Empty set (0.01 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.P_status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
+Empty set (0.00 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.P_status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
+Empty set (0.00 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.p_status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
+Empty set (0.00 sec)
+
+mysql> UPDATE PROJECT SET e_date='2023-8-1' where d_id=5;
+Query OK, 3 rows affected (0.08 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D'and p.p_status="Ongoing" GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
+Empty set (0.01 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D' GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
++--------+--------+---------+
+| f_name | l_name | d_name  |
++--------+--------+---------+
+| Raj    | Kamble | R and D |
++--------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D' GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
++--------+--------+---------+
+| f_name | l_name | d_name  |
++--------+--------+---------+
+| Raj    | Kamble | R and D |
++--------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from PLOCATION;
++------+------------+
+| p_id | p_loc      |
++------+------------+
+|    5 | Bangalore  |
+|    4 | Bangalore  |
+|    3 | Chennai    |
+|    2 | Banagalore |
+|    1 | Chennai    |
+|    1 | Bangalore  |
++------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select e.f_name,e.l_name,d.d_name FROM EMPLOYEE e ,WORKSON w,PROJECT p,DEPARTMENT d where e.ssn=w.ssn and w.p_id=p.p_id and p.d_id=d.d_id and d.d_name='R and D' AND p.e_date >current_date GROUP BY e.f_name,e.l_name,d.d_name having count(distinct w.p_id)>1;
++--------+--------+---------+
+| f_name | l_name | d_name  |
++--------+--------+---------+
+| Raj    | Kamble | R and D |
++--------+--------+---------+
+1 row in set (0.00 sec)
+
+mysql> SELECT p.p_name , d.d_name from PROJECT p,DEPARTMENT d where d.d_id=p.d_id and p.e_date>current_date;
++--------+---------+
+| p_name | d_name  |
++--------+---------+
+| Devops | R and D |
+| Mining | H R     |
+| IOT    | R and D |
+| IT     | R and D |
++--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO WORKSON values(1,2,4);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> INSERT INTO WORKSON values(3,3,6);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> INSERT INTO WORKSON values(5,4,6);
+Query OK, 1 row affected (0.09 sec)
+
+mysql> select * from PROJECTS;
+ERROR 1146 (42S02): Table 'mca072.PROJECTS' doesn't exist
+mysql> select * from PROJECT;
++-----------------+------------+------+------+------------+------------+---------+----------+
+| p_name          | p_location | d_id | p_id | s_date     | e_date     | p_worth | p_status |
++-----------------+------------+------+------+------------+------------+---------+----------+
+| Devops          | Bangalore  |    5 |    1 | 2023-04-01 | 2023-08-01 |  500000 | NULL     |
+| Data science    | Bangalore  |    1 |    2 | 2023-03-01 | 2023-05-01 |  500000 | NULL     |
+| Web DEvelopment | Chennai    |    2 |    3 | 2023-02-01 | 2023-04-01 |  100000 | NULL     |
+| App DEvelopment | Banaglore  |    3 |    4 | 2023-02-01 | 2023-05-01 |  100000 | NULL     |
+| Mining          | Banaglore  |    4 |    5 | 2023-02-01 | 2023-08-01 |  100000 | NULL     |
+| IOT             | Bangalore  |    5 |    6 | 2023-05-01 | 2023-08-01 |   50000 | NULL     |
+| IT              | Bangalore  |    5 |    7 | 2023-05-01 | 2023-08-01 |  700000 | NULL     |
++-----------------+------------+------+------+------------+------------+---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date>current_date GROUP BY e.ssn,e.f_name,e,l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
+ERROR 1054 (42S22): Unknown column 'e1.s_ssn' in 'where clause'
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,WORKSON w,PROJECT p where e1.ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date>current_date GROUP BY e.ssn,e.f_name,e,l_name,e.address,e.salary HAVING COUNT(e1.ssn)>3 and COUNT(DISTINCT w.p_id)>0;
+ERROR 1054 (42S22): Unknown column 'e1.ssn' in 'where clause'
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn
+ and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e,l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
+ERROR 1054 (42S22): Unknown column 'e' in 'group statement'
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e,l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
+ERROR 1054 (42S22): Unknown column 'e' in 'group statement'
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+--------+--------+-----------+--------+
+| ssn | f_name | l_name | address   | salary |
++-----+--------+--------+-----------+--------+
+|   1 | Anil   | Naik   | Bengaluru |  50000 |
++-----+--------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT D.dep_name FROM EMPLOYEE e,DEPENDENT d,PROJECT p,WORKSON w WHERE d.ssn=e.ssn and E.SSN=W.SSN AND w.p_id=;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from MANAGE;
++-----+------+-------------+
+| ssn | d_id | m_startdate |
++-----+------+-------------+
+|   1 |    1 | 2023-01-01  |
+|   2 |    2 | 2023-01-01  |
+|   5 |    3 | 2023-01-01  |
+|   7 |    4 | 2023-01-01  |
+|  10 |    5 | 2023-01-01  |
++-----+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> UPDATE PROJECT SET e_date='2023-7-1' where d_id=5;
+Query OK, 3 rows affected (0.07 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> INSERT INTO WORKSON values(11,1,5);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+--------+--------+-----------+--------+
+| ssn | f_name | l_name | address   | salary |
++-----+--------+--------+-----------+--------+
+|   1 | Anil   | Naik   | Bengaluru |  50000 |
++-----+--------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from MANAGE;
++-----+------+-------------+
+| ssn | d_id | m_startdate |
++-----+------+-------------+
+|   1 |    1 | 2023-01-01  |
+|   2 |    2 | 2023-01-01  |
+|   5 |    3 | 2023-01-01  |
+|   7 |    4 | 2023-01-01  |
+|  10 |    5 | 2023-01-01  |
++-----+------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> update MANAGE SET ssn=3 where d_id=2;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from MANAGE;
++-----+------+-------------+
+| ssn | d_id | m_startdate |
++-----+------+-------------+
+|   1 |    1 | 2023-01-01  |
+|   3 |    2 | 2023-01-01  |
+|   5 |    3 | 2023-01-01  |
+|   7 |    4 | 2023-01-01  |
+|  10 |    5 | 2023-01-01  |
++-----+------+-------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+--------+--------+-----------+--------+
+| ssn | f_name | l_name | address   | salary |
++-----+--------+--------+-----------+--------+
+|   1 | Anil   | Naik   | Bengaluru |  50000 |
++-----+--------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * from WORKSON;
++-----+------+-------+
+| ssn | p_id | hours |
++-----+------+-------+
+|   9 |    1 |     5 |
+|  11 |    1 |     5 |
+|   1 |    2 |     4 |
+|   3 |    3 |     6 |
+|   5 |    4 |     6 |
+|   9 |    6 |     4 |
+|   9 |    7 |     4 |
++-----+------+-------+
+7 rows in set (0.00 sec)
+
+mysql> insert into WORKSON values(2,2,4);
+Query OK, 1 row affected (0.10 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+--------+--------+-----------+--------+
+| ssn | f_name | l_name | address   | salary |
++-----+--------+--------+-----------+--------+
+|   1 | Anil   | Naik   | Bengaluru |  50000 |
++-----+--------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |     1 |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |     1 |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru | 100000 | M      |  NULL |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |  NULL |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |     3 |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |     3 |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |     7 |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |     7 |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |    10 |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |    10 |    5 | 1998-05-05 |
+|  11 | Shashank | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-11 |
+|  12 | Virup    | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-25 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+12 rows in set (0.00 sec)
+
+mysql> update EMPLOYEE SET s_snn=3 where d_id=2;
+ERROR 1054 (42S22): Unknown column 's_snn' in 'field list'
+mysql> update EMPLOYEE SET s_ssn=3 where d_id=2;
+Query OK, 2 rows affected (0.09 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from EMPLOYEE;
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+| ssn | f_name   | m_name | l_name   | address   | salary | gender | s_ssn | d_id | d_o_b      |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+|   1 | Anil     | J      | Naik     | Bengaluru |  50000 | M      |     1 |    1 | 1995-10-01 |
+|   2 | Bharat   | K      | Nair     | Bengaluru |  55000 | M      |     1 |    1 | 1996-11-02 |
+|   3 | Chandra  | L      | Shetty   | Bengaluru | 100000 | M      |     3 |    2 | 1997-05-03 |
+|   4 | Dhanusha | N      | Shetty   | Bengaluru |  60000 | M      |     3 |    2 | 1998-10-04 |
+|   5 | Erika    | NULL   | Patrick  | Bengaluru |  65000 | F      |     3 |    3 | 1999-05-31 |
+|   6 | Manjula  | NULL   | Bhat     | Bengaluru |  70000 | F      |     3 |    3 | 1994-06-20 |
+|   7 | Nima     | R      | NULL     | Bengaluru |  75000 | F      |     7 |    4 | 1995-06-30 |
+|   8 | Prerna   | R      | Vashisht | Bengaluru |  75000 | F      |     7 |    4 | 1998-12-11 |
+|   9 | Raj      | R      | Kamble   | Bengaluru |  80000 | M      |    10 |    5 | 1998-02-10 |
+|  10 | Sumanth  | R      | Ramesh   | Bengaluru |  80000 | M      |    10 |    5 | 1998-05-05 |
+|  11 | Shashank | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-11 |
+|  12 | Virup    | NULL   | NULL     | Bengaluru |  90000 | M      |     1 |    1 | 1999-10-25 |
++-----+----------+--------+----------+-----------+--------+--------+-------+------+------------+
+12 rows in set (0.01 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+---------+--------+-----------+--------+
+| ssn | f_name  | l_name | address   | salary |
++-----+---------+--------+-----------+--------+
+|   1 | Anil    | Naik   | Bengaluru |  50000 |
+|   3 | Chandra | Shetty | Bengaluru | 100000 |
++-----+---------+--------+-----------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from WORKSON;
++-----+------+-------+
+| ssn | p_id | hours |
++-----+------+-------+
+|   9 |    1 |     5 |
+|  11 |    1 |     5 |
+|   1 |    2 |     4 |
+|   2 |    2 |     4 |
+|   3 |    3 |     6 |
+|   5 |    4 |     6 |
+|   9 |    6 |     4 |
+|   9 |    7 |     4 |
++-----+------+-------+
+8 rows in set (0.01 sec)
+
+mysql> SELECT * from PROJECT;
++-----------------+------------+------+------+------------+------------+---------+----------+
+| p_name          | p_location | d_id | p_id | s_date     | e_date     | p_worth | p_status |
++-----------------+------------+------+------+------------+------------+---------+----------+
+| Devops          | Bangalore  |    5 |    1 | 2023-04-01 | 2023-07-01 |  500000 | NULL     |
+| Data science    | Bangalore  |    1 |    2 | 2023-03-01 | 2023-05-01 |  500000 | NULL     |
+| Web DEvelopment | Chennai    |    2 |    3 | 2023-02-01 | 2023-04-01 |  100000 | NULL     |
+| App DEvelopment | Banaglore  |    3 |    4 | 2023-02-01 | 2023-05-01 |  100000 | NULL     |
+| Mining          | Banaglore  |    4 |    5 | 2023-02-01 | 2023-08-01 |  100000 | NULL     |
+| IOT             | Bangalore  |    5 |    6 | 2023-05-01 | 2023-07-01 |   50000 | NULL     |
+| IT              | Bangalore  |    5 |    7 | 2023-05-01 | 2023-07-01 |  700000 | NULL     |
++-----------------+------------+------+------+------------+------------+---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> delete from WORKSON ssn=3 where p_id=3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=3 where p_id=3' at line 1
+mysql> delete from WORKSON where ssn=3;
+Query OK, 1 row affected (0.09 sec)
+
+mysql> SELECT * from PROJECT;
++-----------------+------------+------+------+------------+------------+---------+----------+
+| p_name          | p_location | d_id | p_id | s_date     | e_date     | p_worth | p_status |
++-----------------+------------+------+------+------------+------------+---------+----------+
+| Devops          | Bangalore  |    5 |    1 | 2023-04-01 | 2023-07-01 |  500000 | NULL     |
+| Data science    | Bangalore  |    1 |    2 | 2023-03-01 | 2023-05-01 |  500000 | NULL     |
+| Web DEvelopment | Chennai    |    2 |    3 | 2023-02-01 | 2023-04-01 |  100000 | NULL     |
+| App DEvelopment | Banaglore  |    3 |    4 | 2023-02-01 | 2023-05-01 |  100000 | NULL     |
+| Mining          | Banaglore  |    4 |    5 | 2023-02-01 | 2023-08-01 |  100000 | NULL     |
+| IOT             | Bangalore  |    5 |    6 | 2023-05-01 | 2023-07-01 |   50000 | NULL     |
+| IT              | Bangalore  |    5 |    7 | 2023-05-01 | 2023-07-01 |  700000 | NULL     |
++-----------------+------------+------+------+------------+------------+---------+----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT e.ssn,e.f_name,e.l_name,e.address,e.salary from EMPLOYEE e,EMPLOYEE e1,WORKSON w,PROJECT p where e1.s_ssn =e.ssn and w.ssn=e.ssn and p.p_id=w.p_id and p.e_date<current_date GROUP BY e.ssn,e.f_name,e.l_name,e.address,e.salary HAVING COUNT(e1.s_ssn)>3 and COUNT(DISTINCT w.p_id)>0;
++-----+--------+--------+-----------+--------+
+| ssn | f_name | l_name | address   | salary |
++-----+--------+--------+-----------+--------+
+|   1 | Anil   | Naik   | Bengaluru |  50000 |
++-----+--------+--------+-----------+--------+
+1 row in set (0.01 sec)
+
+mysql> SELECT d.dep_name FROM EMPLOYEE e,DEPARTMENT d,PROJECT p,WORKSON w WHERE d.ssn=e.ssn and e.ssn=w.ssn and 
+
+
