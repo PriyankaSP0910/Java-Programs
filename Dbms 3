@@ -1,0 +1,523 @@
+db.musician.insertMany([
+{
+ssn:1,
+name:"vijay",
+address:"kuppam",
+phone:7013762124,
+instrument:[101,102,103],
+album_id:[20,21]
+},
+{
+ssn:2,
+name:"Raj",
+address:"kgf",
+phone:7013762190,
+instrument:[101,102],
+album_id:[]
+},
+{
+ssn:3,
+name:"veda",
+address:"Banglore",
+phone:8013762190,
+instrument:[101,102],
+album_id:[22]
+},
+{
+ssn:4,
+name:"Basha",
+address:"vkota",
+phone:6013762190,
+instrument:[101,102],
+album_id:[23]
+},
+{
+ssn:5,
+name:"ramu",
+address:"chittoor",
+phone:9013762190,
+instrument:[101,102],
+album_id:[24]
+}
+])
+
+...........................
+db.album.insertMany([
+{
+_id:20,
+title:"Rhythmic Harmony",
+date:"2023-09-13T00:00:00Z",
+format:"cd",
+songs_id:[50,51,55,56]
+},
+{
+_id:21,
+title:"Melodic Dreams",
+date:"2023-09-18T00:00:00Z",
+format:"cd",
+songs_id:[57,58]
+},
+{
+_id:22,
+title:"Serenade in C",
+date:"2023-09-18T00:00:00Z",
+format:"mc",
+songs_id:[50,53]
+},
+{
+_id:23,
+title:"Bluesy Tunes",
+date:"2023-09-10T00:00:00Z",
+format:"mc",
+songs_id:[50,54]
+},
+{
+_id:24,
+title:"Classical Crescendo",
+date:"2023-09-11T00:00:00Z",
+format:"mc",
+songs_id:[50,60]
+}
+])
+--------------------------------
+db.song.insertMany([
+{
+_id:50,
+song_title:"Rhythm of the Night",
+author:"John Smith"
+},
+{
+_id:51,
+song_title:"Melody in Motion",
+author:"Emily Davis"
+},
+{
+_id:55,
+song_title:"Serenade to the Stars",
+author:"Michael Johnson"
+},
+{
+_id:56,
+song_title:"Dancing in the Rain",
+author:"Sarah Anderson"
+},
+{
+_id:57,
+song_title:"Harmony of the Heart",
+author:"David Wilson"
+},
+{
+_id:58,
+song_title:"Moonlit Sonata",
+author:"Olivia Martin"
+},
+{
+_id:53,
+song_title:"Jazz Dreams",
+author:"Robert Lee"
+},
+{
+_id:54,
+song_title:"Acoustic Serenity",
+author:"Sophia White"
+},
+{
+_id:60,
+song_title:"Electric Groove",
+author:"James Brown"
+}
+])
+..........................
+
+db.instrument.insertMany([
+{
+_id:101,
+name:"guitar"
+},
+{
+_id:102,
+name:"flute"
+},
+{
+_id:103,
+name:"synthesizer"
+}
+])
+
+------------------------------------------
+
+1.LIST MUSICIAN NAME,TITLE OF THE SONG WHICH HE HAS PLAYED,THE ALBUM IN WHICH 
+SONG HAS OCCURED.
+
+db.musician.aggregate([
+  {
+    $unwind: "$album_id"
+  },
+  {
+    $lookup: {
+      from: "album",
+      localField: "album_id",
+      foreignField: "_id",
+      as: "album"
+    }
+  },
+  {
+    $unwind: "$album"
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "album.songs_id",
+      foreignField: "_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      _id: 0,
+      Musician: "$name",
+      Song: "$songs.song_title",
+      Album: "$album.title"
+    }
+  }
+])
+....................................................
+wrong 
+$unwind: "$album_id"
+  },
+  {
+    $lookup: {
+      from: "album",
+      localField: "album_id",
+      foreignField: "_id",
+      as: "album"
+    }
+  },
+  {
+    $unwind: "$album"
+  },
+  {
+    $lookup: {
+      from: "song",
+      localField: "album.songs_id",
+      foreignField: "_id",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $project: {
+      _id: 0,
+      Musician: "$name",
+      Song: "$songs.song_title",
+      Album: "$album.title"
+    }
+  }
+])
+....................................................
+2.)
+
+db.musician.find({album_id: []})
+...........................................
+...................................................
+3.)
+db.song.aggregate([
+  {
+    $lookup: {
+      from: "album",
+      localField: "_id",
+      foreignField: "songs_id",
+      as: "albums"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      Song_Title: "$song_title",
+      Author: "$author",
+      Album_Count: { $size: "$albums" }
+    }
+  },
+  {
+    $match: {
+      Album_Count: { $gt: 3 }
+    }
+  }
+])
+..............................................
+4.)
+db.musician.aggregate([
+  {
+    $unwind: "$instrument"
+  },
+  {
+    $group: {
+      _id: "$instrument.ins_name",
+      Musicians: { $addToSet: "$name" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      Instrument: "$_id",
+      NumberOfMusicians: { $size: "$Musicians" }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      Instruments: { $push: { Instrument: "$Instrument", NumberOfMusicians: "$NumberOfMusicians" } },
+      AverageMusiciansPerInstrument: { $avg: "$NumberOfMusicians" }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      Instruments: 1,
+      AverageMusiciansPerInstrument: 1
+    }
+  }
+])
+..............................................................................
+5.)
+
+..................................................................
+6.)
+db.musician.find({
+instrument:[101,102,103]
+})
+..............................
+nis
+#Collection Musician
+
+db.musician.insertMany([
+  {
+    ssn: 'M001',
+    name: 'Alice',
+    address: 'Bangalore',
+    phone: 8745214523,
+    iuin: [ 1, 5, 8 ],
+    sid: [ 'S005', 'S004' ]
+  },
+  {
+    ssn: 'M002',
+    name: 'Bob',
+    address: 'Chennai',
+    phone: 9874532145,
+    iuin: [ 3, 8 ],
+    sid: [ 'S002', 'S001', 'S006' ]
+  },
+  {
+    ssn: 'M003',
+    name: 'Tommy',
+    address: 'Mysore',
+    phone: 8745632145,
+    iuin: [ 1 ],
+    sid: [ 'S001', 'S002' ]
+  },
+  {
+    ssn: 'M004',
+    name: 'Krish',
+    address: 'Trichy',
+    phone: 9874521456,
+    iuin: [ 5, 3, 8, 1 ],
+    sid: [ 'S002', 'S001', 'S003' ]
+  }
+])
+
+#Collection Album
+
+db.album.insertMany([
+  {
+    auin: 'A001',
+    title: 'Album 1',
+    date: '2001-5-23',
+    format: 'CD',
+    sid: [ 'S001', 'S002', 'S006' ],
+    producer: 'M004'
+  },
+  {
+    auin: 'A002',
+    title: 'Album 2',
+    date: '2010-9-13',
+    format: 'MC',
+    sid: [ 'S003', 'S004', 'S005' ],
+    producer: 'M001'
+  }
+])
+
+#Collection Song
+
+db.song.insertMany([
+  {
+    sid: 'S001',
+    stitle: 'Title 1',
+    author: 'author 1'
+  },
+  {
+    sid: 'S002',
+    stitle: 'Title 2',
+    author: 'author 2'
+  },
+  {
+    sid: 'S003',
+    stitle: 'Title 3',
+    author: 'author 3'
+  },
+  {
+    sid: 'S004',
+    stitle: 'Title 4',
+    author: 'author 4'
+  },
+  {
+    sid: 'S005',
+    stitle: 'Title 5',
+    author: 'author 5'
+  }
+])
+
+#Collection Instrument
+
+db.instrument.insertMany([
+  {
+    iuin: 1,
+    name: 'guitar',
+    key: 'CDGA'
+  },
+  {
+    iuin: 3,
+    name: 'piano',
+    key: 'CDGF'
+  },
+  {
+    iuin: 5,
+    name: 'drums',
+    key: 'CDG'
+  },
+  {
+    iuin: 8,
+    name: 'flute',
+    key: 'CDG'
+  }
+])
+
+#Queries
+
+1. List musician name, title of the song which he has played, the album in which song has occurred.
+
+db.musician.aggregate([
+  {
+    $lookup: {
+      from: "song",
+      localField: "sid",
+      foreignField: "sid",
+      as: "songs"
+    }
+  },
+  {
+    $unwind: "$songs"
+  },
+  {
+    $lookup: {
+      from: "album",
+      localField: "songs.sid",
+      foreignField: "sid",
+      as: "albums"
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      album: "$albums.title",
+      song: "$songs.stitle"
+    }
+  },
+  {
+    $group: {
+      _id: {
+        name: "$name",
+        album: "$album"
+      },
+      songs: { $addToSet: "$song" }
+    }
+  },
+  {
+    $group: {
+      _id: "$_id.name",
+      albums: {
+        $push: {
+          name: "$_id.album",
+          songs: "$songs"
+        }
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      name: "$_id",
+      albums: 1
+    }
+  }
+])
+
+2. Retrieve the name of Musician who have not produced any Album
+
+db.musician.find({ ssn: { $nin: db.album.distinct("producer") } })
+
+3. List the details of songs which are performed by more than 2 musicians.
+
+db.song.aggregate([ { $lookup: { from: "musician", localField: "sid", foreignField: "sid", as: "musicians" } }, { $project: { _id: 0, sid: 1, stitle: 1, author: 1, numMusicians: { $size: "$musicians" } } }, { $match: { numMusicians: { $gt: 2 } } }] )
+
+4. List the different instruments played by the musicians and the average number of musicians who play the instrument.
+
+db.musician.aggregate([
+  {
+    $unwind: "$iuin" // Unwind the array of instruments
+  },
+  {
+    $group: {
+      _id: "$iuin",
+      count: { $sum: 1 } // Count the number of musicians for each instrument
+    }
+  },
+  {
+    $lookup: {
+      from: "instrument",
+      localField: "_id",
+      foreignField: "iuin",
+      as: "instrumentDetails"
+    }
+  },
+  {
+    $project: {
+      instrument: "$instrumentDetails.name", // Get the instrument name
+      averageMusicians: { $divide: ["$count", db.musician.count()] } // Calculate the average
+    }
+  }
+])
+
+5.Retrieve album title produced by the producer who plays guitar as well as flute and has produced no of songs greater than or equal to the average songs produced by all producers.
+
+notown> const producersList = db.album.distinct("producer");
+
+notown> const instrument_to_have = db.instrument.distinct("iuin", { name: { $in: ["flute", "guitar"] } });
+
+notown> const producerList = db.musician.distinct("ssn", { ssn: { $in: producersList }, iuin: { $all: instrument_to_have } });
+
+notown> const minSidCount = db.album.aggregate([ { $group: { _id: "$producer", totalSongs: { $sum: { $size: "$sid" } } } }, { $group: { _id: null, avgSongsProduced: { $avg: "$totalSongs" } } }, { $project: { _id: 0, avgSongsProduced: 1 } }] ).next().avgSongsProduced;
+
+notown> db.musician.aggregate([ { $match: { ssn: { $in: producersList }, $expr: { $gte: [{ $size: "$sid" }, minSidCount] } } }, { $project: { _id: 0, name: 1, sidCount: { $size: "$sid" } } }] )
+
+6. List the details of musicians who can play all the instruments present
+
+
+db.musician.find({
+  iuin: { $all: db.instrument.distinct("iuin") }
+})
