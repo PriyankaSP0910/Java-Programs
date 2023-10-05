@@ -1,4 +1,47 @@
-class Thread1 extends Thread {
+package trd;
+
+public class ThreadStateExample {
+
+    public static void main(String[] args) {
+
+        Thread thread1 = new Thread(new Thread1Runnable());
+        Thread thread2 = new Thread(new Thread2Runnable());
+
+        System.out.println("Thread1 state is: " + thread1.getState());
+        System.out.println("Thread2 state is: " + thread2.getState());
+
+        System.out.println("Starting Thread1...");
+        thread1.start();
+
+        System.out.println("Thread1 state is: " + thread1.getState());
+
+        System.out.println("Starting Thread2...");
+        thread2.start();
+
+        System.out.println("Thread2 state is: " + thread2.getState());
+
+        try {
+            Thread.sleep(1000); // Sleep for a short while to give threads time to change states
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Thread1 state is: " + thread1.getState());
+        System.out.println("Thread2 state is: " + thread2.getState());
+
+        try {
+            thread1.join(); // Wait for thread1 to finish
+            thread2.join(); // Wait for thread2 to finish
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Thread1 state is: " + thread1.getState());
+        System.out.println("Thread2 state is: " + thread2.getState());
+    }
+}
+
+class Thread1Runnable implements Runnable {
     @Override
     public void run() {
         for (int i = 1; i <= 5; i++) {
@@ -12,7 +55,7 @@ class Thread1 extends Thread {
     }
 }
 
-class Thread2 extends Thread {
+class Thread2Runnable implements Runnable {
     @Override
     public void run() {
         for (int i = 10; i <= 15; i++) {
@@ -23,26 +66,5 @@ class Thread2 extends Thread {
                 e.printStackTrace();
             }
         }
-    }
-}
-
-public class ThreadLifecycleDemo {
-    public static void main(String[] args) {
-        Thread1 thread1 = new Thread1();
-        Thread2 thread2 = new Thread2();
-        
-        System.out.println("Starting Thread1...");
-        thread1.start();
-        
-        System.out.println("Starting Thread2...");
-        thread2.start();
-        
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        
-        System.out.println("Both threads have had some time to execute.");
     }
 }
