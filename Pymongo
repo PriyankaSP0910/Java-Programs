@@ -67,6 +67,9 @@ while True:
         else:
             print("Musician not found.")
 
+
+
+
     elif choice == "4":
         musician_id = input("Enter Musician SSN to delete: ")
         deleted_count = music_db.delete_musician(musician_id)
@@ -79,6 +82,15 @@ while True:
         music_db.close_connection()
         print("Exiting...")
         break
+
+
+
+https://studyittoday.blogspot.com/2014/07/dbms-lab2-mysql.html
+
+https://studyittoday.blogspot.com/2014/07/v-behaviorurldefaultvmlo.html
+
+
+https://studyittoday.blogspot.com/2014/07/dbms-lab5-mysql.html
 
     else:
         print("Invalid choice. Please select a valid option.")
